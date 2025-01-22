@@ -96,7 +96,7 @@ package body AHTML.Node is
             Tmp := @ & " " &
                Attr.Key.Unwrap & "=" & '"' &
                Attr.Val.Unwrap & '"';
-         end  loop;
+         end loop;
 
          if Have_Children then
             Tmp := @ & ">";
