@@ -4,15 +4,15 @@
 
 package body AHTML.Strings is
 
-   function Cook (Text : String) return Cooked is
+   function Cook (Text : Raw) return Cooked is
    begin
       --  LOL. LMAO.
-      return (Inner => Raw (SU.To_Unbounded_String (Text)));
+      return (Inner => Text);
    end Cook;
 
-   function Denote (Text : String) return Name is
+   function Denote (Text : Raw) return Name is
    begin
-      return (Inner => Raw (SU.To_Unbounded_String (Text)));
+      return (Inner => Text);
    end Denote;
 
    function Unwrap (C : Cooked) return Raw is (C.Inner);

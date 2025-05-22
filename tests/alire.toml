@@ -16,3 +16,6 @@ ahtml = "*"
 
 [[pins]]
 ahtml = { path='..' }
+
+[[depends-on]]
+vss = "^25.0.0"

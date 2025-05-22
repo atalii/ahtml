@@ -2,6 +2,8 @@
 --  License, v. 2.0. If a copy of the MPL was not distributed with this
 --  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+with VSS.Strings.Conversions;
+
 package body AHTML.Node is
 
    use Ada.Containers;
@@ -23,7 +25,9 @@ package body AHTML.Node is
    end HTML_Doc;
 
    function Mk_Element (D : in out Doc; Name : String) return Node_Handle is
-      (D.Mk_Element (AHTML.Strings.Denote (Name)));
+      (D.Mk_Element
+         (AHTML.Strings.Denote
+            (VSS.Strings.Conversions.To_Virtual_String (Name))));
 
    function Mk_Element (D : in out Doc; Name : AHTML.Strings.Name)
       return Node_Handle
@@ -35,7 +39,9 @@ package body AHTML.Node is
    end Mk_Element;
 
    function Mk_Text (D : in out Doc; Content : String) return Node_Handle is
-      (D.Mk_Text (AHTML.Strings.Cook (Content)));
+      (D.Mk_Text
+         (AHTML.Strings.Cook
+            (VSS.Strings.Conversions.To_Virtual_String (Content))));
 
    function Mk_Text (D : in out Doc; Content : AHTML.Strings.Cooked)
       return Node_Handle
@@ -78,7 +84,7 @@ package body AHTML.Node is
    function To_String (D : Doc; N : Node_Handle) return AHTML.Strings.Raw
    is
 
-      use SU;
+      use VSS.Strings;
 
       Tmp : AHTML.Strings.Raw;
 

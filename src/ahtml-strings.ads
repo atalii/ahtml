@@ -2,14 +2,12 @@
 --  License, v. 2.0. If a copy of the MPL was not distributed with this
 --  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-with Ada.Strings.Unbounded;
+with VSS.Strings;
 
 package AHTML.Strings is
-   package SU renames Ada.Strings.Unbounded;
-
-   subtype Raw is SU.Unbounded_String;
-   --  Raw is an Unbounded_String meant for unescaped HTML and
-   --  HTML fragments.
+   subtype Raw is VSS.Strings.Virtual_String;
+   --  Raw is a VSS string meant for unescaped HTML and
+   --  fragments thereof.
 
    type Name is tagged private;
    --  Names are exclusively ASCII alphanumerics (WHATWG 13.1.2).
@@ -19,8 +17,8 @@ package AHTML.Strings is
    --  Characters that must be escaped for HTML are escaped as
    --  necessary.
 
-   function Cook (Text : String) return Cooked;
-   function Denote (Text : String) return Name;
+   function Cook (Text : Raw) return Cooked;
+   function Denote (Text : Raw) return Name;
 
    function Unwrap (N : Name) return Raw;
    function Unwrap (C : Cooked) return Raw;

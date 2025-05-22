@@ -9,3 +9,5 @@ licenses = "MPL-2.0"
 website = ""
 tags = []
 
+[[depends-on]]
+"vss" = "25.0.0"

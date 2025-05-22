@@ -4,6 +4,8 @@
 
 with AHTML.Node; use AHTML.Node;
 with AHTML.Strings; use AHTML.Strings;
+with VSS.Strings; use VSS.Strings;
+with VSS.Strings.Conversions;
 
 procedure Tests is
 
@@ -12,10 +14,9 @@ procedure Tests is
    procedure Assert_Becomes
       (Doc : AHTML.Node.Doc; Expected : String)
    is
-      Actual : constant String :=
-         AHTML.Strings.SU.To_String (Doc.To_String);
+      Actual : constant AHTML.Strings.Raw := Doc.To_String;
    begin
-      if Actual /= Expected then
+      if Actual /= VSS.Strings.Conversions.To_Virtual_String (Expected) then
          raise Test_Failure;
       end if;
    end Assert_Becomes;
