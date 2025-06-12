@@ -16,10 +16,10 @@ package AHTML.Node is
       Val : AHTML.Strings.Cooked;
    end record;
 
-   function Null_Doc return Doc;
-   --  Null_Doc returns an empty doc.
+   Null_Doc : constant Doc;
+   --  Null_Doc is an empty doc.
 
-   function HTML_Doc return Doc;
+   HTML_Doc : constant Doc;
    --  HTML_Doc is identical to Null_Doc except that the DOCTYPE
    --  is set to html.
 
@@ -92,5 +92,12 @@ private
    end record;
 
    function Mk_Element (Name : AHTML.Strings.Name) return Node_Inner;
+
+   Null_Doc : constant Doc :=
+     (Inner => Node_Vec.Empty_Vector, Doctype => (Present => False));
+
+   Html_Doc : constant Doc :=
+     (Inner => Node_Vec.Empty_Vector, Doctype =>
+        (Present => True, Doctype => AHTML.Strings.Cook ("html")));
 
 end AHTML.Node;

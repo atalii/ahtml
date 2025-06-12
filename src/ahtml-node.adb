@@ -12,18 +12,6 @@ package body AHTML.Node is
    use Attrs_Vec;
    use Node_Vec;
 
-   function Null_Doc return Doc is
-      ((Inner => Node_Vec.Empty_Vector,
-      Doctype => (Present => False)));
-
-   function HTML_Doc return Doc
-   is
-      D : Doc := Null_Doc;
-   begin
-      D.With_Doctype (Cook ("html"));
-      return D;
-   end HTML_Doc;
-
    function Mk_Element (D : in out Doc; Name : String) return Node_Handle is
       (D.Mk_Element
          (AHTML.Strings.Denote
