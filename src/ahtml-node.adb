@@ -64,11 +64,6 @@ package body AHTML.Node is
       D.Inner.Update_Element (N, Update'Access);
    end With_Attribute;
 
-   procedure With_Doctype (D : in out Doc; T : AHTML.Strings.Cooked)
-   is begin
-      D.Doctype := (Present => True, Doctype => T);
-   end With_Doctype;
-
    function To_String (D : Doc; N : Node_Handle) return AHTML.Strings.Raw
    is
 
@@ -117,9 +112,12 @@ package body AHTML.Node is
       end Stringify_Node;
 
    begin
-      if D.Doctype.Present then
-         Tmp := @ & "<!DOCTYPE " & D.Doctype.Doctype.Unwrap & ">";
-      end if;
+      case D.Sort is
+         when HTML =>
+            Tmp := @ & "<!DOCTYPE html>";
+         when XML =>
+            Tmp := @ & "<?xml version='1.0' encoding='utf-8' ?>";
+      end case;
 
       Stringify_Node (D.Inner (N));
 

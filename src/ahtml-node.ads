@@ -16,12 +16,13 @@ package AHTML.Node is
       Val : AHTML.Strings.Cooked;
    end record;
 
-   Null_Doc : constant Doc;
-   --  Null_Doc is an empty doc.
-
    HTML_Doc : constant Doc;
-   --  HTML_Doc is identical to Null_Doc except that the DOCTYPE
-   --  is set to html.
+   --  HTML_Doc can be used to create an HTML document with the proper
+   --  <DOCTYPE html> and other HTML-specific behavior.
+
+   XML_Doc : constant Doc;
+   --  XML_Doc can be used to create an XML document with the proper prolog,
+   --  XMLDec, and other XML-specific behavior.
 
    function Mk_Element (D : in out Doc; Name : String) return Node_Handle;
    function Mk_Element
@@ -37,7 +38,6 @@ package AHTML.Node is
       (Key : AHTML.Strings.Name; Val : AHTML.Strings.Cooked)
       return Attr;
 
-   procedure With_Doctype (D : in out Doc; T : AHTML.Strings.Cooked);
    procedure With_Child (D : in out Doc; N, C : Node_Handle);
    procedure With_Attribute (D : in out Doc; N : Node_Handle; A : Attr);
 
@@ -51,12 +51,7 @@ package AHTML.Node is
 
 private
 
-   type Maybe_Doctype (Present : Boolean := False) is record
-      case Present is
-         when True => Doctype : AHTML.Strings.Cooked;
-         when False => null;
-      end case;
-   end record;
+   type Doc_Sort is (XML, HTML);
 
    type Node_Handle is new Natural;
 
@@ -87,17 +82,16 @@ private
       (Index_Type => Node_Handle, Element_Type => Node);
 
    type Doc is tagged record
-      Doctype : Maybe_Doctype;
+      Sort  : Doc_Sort;
       Inner : Node_Vec.Vector;
    end record;
 
    function Mk_Element (Name : AHTML.Strings.Name) return Node_Inner;
 
-   Null_Doc : constant Doc :=
-     (Inner => Node_Vec.Empty_Vector, Doctype => (Present => False));
+   HTML_Doc : constant Doc :=
+     (Inner => Node_Vec.Empty_Vector, Sort => HTML);
 
-   Html_Doc : constant Doc :=
-     (Inner => Node_Vec.Empty_Vector, Doctype =>
-        (Present => True, Doctype => AHTML.Strings.Cook ("html")));
+   XML_Doc : constant Doc :=
+     (Inner => Node_Vec.Empty_Vector, Sort => XML);
 
 end AHTML.Node;

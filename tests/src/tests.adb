@@ -21,9 +21,9 @@ procedure Tests is
       end if;
    end Assert_Becomes;
 
-   procedure Test_Basic_Gen
+   procedure Test_HTML_Basic_Gen
    is
-      Doc : AHTML.Node.Doc := AHTML.Node.Null_Doc;
+      Doc : AHTML.Node.Doc := AHTML.Node.HTML_Doc;
       Root : constant AHTML.Node.Node_Handle := Doc.Mk_Element ("html");
       Body_Node : constant AHTML.Node.Node_Handle := Doc.Mk_Element ("body");
       Text_Node : constant AHTML.Node.Node_Handle := Doc.Mk_Text ("test");
@@ -32,23 +32,37 @@ procedure Tests is
          AHTML.Node.Mk_Attr (Denote ("a"), Cook ("b"));
 
    begin
-      Assert_Becomes (Doc, "<html/>");
+
+      Assert_Becomes (Doc, "<!DOCTYPE html><html/>");
 
       Doc.With_Child (Root, Body_Node);
-      Assert_Becomes (Doc, "<html><body/></html>");
+      Assert_Becomes (Doc, "<!DOCTYPE html><html><body/></html>");
 
       Doc.With_Attribute (Body_Node, Attr);
-      Assert_Becomes (Doc, "<html><body a=""b""/></html>");
+      Assert_Becomes (Doc, "<!DOCTYPE html><html><body a=""b""/></html>");
 
       Doc.With_Child (Body_Node, Text_Node);
-      Assert_Becomes (Doc, "<html><body a=""b"">test</body></html>");
+      Assert_Becomes (Doc,
+        "<!DOCTYPE html><html><body a=""b"">test</body></html>");
 
-      Doc.With_Doctype (Cook ("html"));
-      Assert_Becomes
-         (Doc,
-          "<!DOCTYPE html><html><body a=""b"">test</body></html>");
-   end Test_Basic_Gen;
+   end Test_HTML_Basic_Gen;
+
+   procedure Test_XML_Basic_Gen
+   is
+      Doc : AHTML.Node.Doc := AHTML.Node.XML_Doc;
+      Item : constant AHTML.Node.Node_Handle := Doc.Mk_Element ("thing");
+      Attr : constant AHTML.Node.Attr := AHTML.Node.Mk_Attr
+        (Denote ("key"), Cook ("val"));
+   begin
+      Assert_Becomes (Doc, "<?xml version='1.0' encoding='utf-8' ?><thing/>");
+
+      Doc.With_Attribute (Item, Attr);
+      Assert_Becomes (Doc,
+        "<?xml version='1.0' encoding='utf-8' ?><thing val=""key""/>");
+
+   end Test_XML_Basic_Gen;
 
 begin
-   Test_Basic_Gen;
+   Test_HTML_Basic_Gen;
+   Test_XML_Basic_Gen;
 end Tests;
