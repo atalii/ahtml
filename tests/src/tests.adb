@@ -5,18 +5,24 @@
 with AHTML.Node; use AHTML.Node;
 with AHTML.Strings; use AHTML.Strings;
 with VSS.Strings; use VSS.Strings;
-with VSS.Strings.Conversions;
+with VSS.Text_Streams; use VSS.Text_Streams;
+with VSS.Text_Streams.Standards; use VSS.Text_Streams.Standards;
 
 procedure Tests is
 
    Test_Failure : exception;
 
    procedure Assert_Becomes
-      (Doc : AHTML.Node.Doc; Expected : String)
+      (Doc : AHTML.Node.Doc; Expected : Virtual_String)
    is
       Actual : constant AHTML.Strings.Raw := Doc.To_String;
+      Success : Boolean := True;
+
+      SE : Output_Text_Stream'Class := Standard_Error;
    begin
-      if Actual /= VSS.Strings.Conversions.To_Virtual_String (Expected) then
+      if Actual /= Expected then
+         Put_Line (SE, "Expected: " & Expected, Success);
+         Put_Line (SE, "Actual:   " & Actual, Success);
          raise Test_Failure;
       end if;
    end Assert_Becomes;
@@ -58,7 +64,7 @@ procedure Tests is
 
       Doc.With_Attribute (Item, Attr);
       Assert_Becomes (Doc,
-        "<?xml version='1.0' encoding='utf-8' ?><thing val=""key""/>");
+        "<?xml version='1.0' encoding='utf-8' ?><thing key=""val""/>");
 
    end Test_XML_Basic_Gen;
 
