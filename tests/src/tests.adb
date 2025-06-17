@@ -37,6 +37,8 @@ procedure Tests is
       Attr : constant AHTML.Node.Attr :=
          AHTML.Node.Mk_Attr (Denote ("a"), Cook ("b"));
 
+      Next_Text : constant AHTML.Node.Node_Handle := Doc.Mk_Text ("value");
+
    begin
 
       Assert_Becomes (Doc, "<!DOCTYPE html><html/>");
@@ -50,6 +52,10 @@ procedure Tests is
       Doc.With_Child (Body_Node, Text_Node);
       Assert_Becomes (Doc,
         "<!DOCTYPE html><html><body a=""b"">test</body></html>");
+
+      Doc.With_Child (Body_Node, Next_Text);
+      Assert_Becomes (Doc,
+        "<!DOCTYPE html><html><body a=""b"">test value</body></html>");
 
    end Test_HTML_Basic_Gen;
 

@@ -72,12 +72,14 @@ package body AHTML.Node is
       Tmp : AHTML.Strings.Raw;
 
       procedure Stringify_Element (Target : Node_Inner);
-      procedure Stringify_Node (Target : Node);
+      procedure Stringify_Node (Target : Node; Index : Natural := 0);
 
       procedure Stringify_Element (Target : Node_Inner)
       is
          Have_Children : constant Boolean :=
             Target.Children.Length /= 0;
+
+         Child_Index : Natural := 0;
       begin
          Tmp := @ & "<" & Target.Name.Unwrap;
 
@@ -92,7 +94,8 @@ package body AHTML.Node is
          end if;
 
          for Child of Target.Children loop
-            Stringify_Node (D.Inner (Child));
+            Stringify_Node (D.Inner (Child), Child_Index);
+            Child_Index := @ + 1;
          end loop;
 
          if Have_Children then
@@ -102,12 +105,18 @@ package body AHTML.Node is
          end if;
       end Stringify_Element;
 
-      procedure Stringify_Node (Target : Node) is
+      procedure Stringify_Node (Target : Node; Index : Natural := 0) is
       begin
          case Target.Inner.K is
             when Element => Stringify_Element (Target.Inner);
             when Text =>
+
+               if Index /= 0 then
+                  Tmp := @ & " ";
+               end if;
+
                Tmp := @ & Target.Inner.Content.Unwrap;
+
          end case;
       end Stringify_Node;
 
