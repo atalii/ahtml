@@ -18,6 +18,7 @@
             alire
             gnat14
             gnat14Packages.gprbuild
+            unzip
           ];
         };
       });
