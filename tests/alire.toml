@@ -18,4 +18,5 @@ ahtml = "*"
 ahtml = { path='..' }
 
 [[depends-on]]
-vss = "^25.0.0"
+vss_text = "26.2.0"
+vss_extra = "26.2.0"

@@ -10,4 +10,4 @@ website = ""
 tags = []
 
 [[depends-on]]
-"vss" = "25.0.0"
+"vss_text" = "26.2.0"
